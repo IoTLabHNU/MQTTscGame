@@ -1,0 +1,7 @@
+tkinter
+paho.mqtt.client
+mysql.connector
+mysql.connector
+RPi.GPIO
+mfrc522
+threading
