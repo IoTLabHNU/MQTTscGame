@@ -65,4 +65,5 @@ Lastly information from the deliveries of products from one tier to the next
       
  One thing to note is that one must manually add the product information in the specific format stated otherwise the system will have problems and become unstable.
 
-
+### Library Testing
+for testing all librarys, the file "test_libs.py" will check if all librarys are running.
