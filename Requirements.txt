@@ -5,3 +5,26 @@ mysql.connector
 RPi.GPIO
 mfrc522
 threading
+
+
+Docker auf rasppi installieren:
+https://maker-tutorials.com/docker-raspberry-pi-installieren-raspbian-debian-stretch-jessie/
+
+tkinter:
+schon installiert
+
+MQTT:
+sudo pip3 install paho-mqtt
+
+Database:
+sudo apt-get install mariadb-server -j
+	sudo mysql -u root -p
+		password: root
+	create user‘pi‘@‘%‘ identified by ‚pi‘;
+	grant all privileges on *.* to ‚pi‘@‘%‘ with grant option;
+	flush privileges;
+	exit
+mysql connector → bereits intalliert
+
+RFID:
+sudo pip3 install mfrc522
