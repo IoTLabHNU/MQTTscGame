@@ -1,0 +1,16 @@
+version: "2"
+services:
+  app:
+    build: .
+    links:
+      - db
+
+  db:
+    image: mysql:latest
+    ports:
+      - "32000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD : root
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+      - /etc/localtime:/etc/localtime:ro
