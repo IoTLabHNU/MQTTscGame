@@ -101,10 +101,10 @@ round_time_copy =round_time
 reader = SimpleMFRC522()
 """
 Connection to the mysql database.
-Each client has it's own database on the device. This makes for the fact that the clients can look locally for their db with name mydb
+Each client has it's own database on the device. This makes for the fact that the clients can look locally for their db with name clientdb
 """
 
-connection = mysql.connector.connect(host='127.0.0.1',  database='mydb', user='pi',password='pi',auth_plugin='mysql_native_password')
+connection = mysql.connector.connect(host='127.0.0.1',  database='clientdb', user='pi',password='pi',auth_plugin='mysql_native_password')
 cur=connection.cursor()
 
 
@@ -177,7 +177,7 @@ def on_message(mosq, obj, msg):
             round_id = nr[barrier+1:]
             print(round_id)
 
-            QUERY="SELECT * FROM mydb.game"   #returns all the products
+            QUERY="SELECT * FROM clientdb.game"   #returns all the products
             cur=connection.cursor()
             cur.execute(QUERY)
             games=cur.fetchall()
@@ -186,7 +186,7 @@ def on_message(mosq, obj, msg):
             print(game_id)
 
             #inserts new round in to table
-            QUERY="INSERT INTO mydb.rounds (round_id,round_number,length,start_time,end_time,game_id) VALUES (%s, %s, %s, %s, %s, %s)"
+            QUERY="INSERT INTO clientdb.rounds (round_id,round_number,length,start_time,end_time,game_id) VALUES (%s, %s, %s, %s, %s, %s)"
             print("db insert round")
             vals = (round_id,r,round_time,datetime.now(),datetime.now(),game_id)
             cur.execute(QUERY, vals)
@@ -357,13 +357,13 @@ def on_message(mosq, obj, msg):
             cur=connection.cursor()
         
             #selects the current round ID 
-            QUERY="SELECT round_id FROM mydb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
+            QUERY="SELECT round_id FROM clientdb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
             cur.execute(QUERY)
             previous_round = cur.fetchall()
             previous_round = previous_round[0][0]
         
             #amends the stoptime of the round to the correct stop time
-            sql = "UPDATE mydb.rounds SET end_time = %s WHERE round_id = %s"
+            sql = "UPDATE clientdb.rounds SET end_time = %s WHERE round_id = %s"
             val = (datetime.now(), previous_round)
             cur.execute(sql, val)
             connection.commit()
@@ -534,7 +534,7 @@ def on_message(mosq, obj, msg):
 
             #inserts into the database
             cur=connection.cursor()
-            QUERY="INSERT INTO mydb.game (game_id,rounds) VALUES (%s, %s)"
+            QUERY="INSERT INTO clientdb.game (game_id,rounds) VALUES (%s, %s)"
             vals = (game_id,str(0))
             cur.execute(QUERY, vals)
             connection.commit()
@@ -604,14 +604,14 @@ This happens by selecting the last game from the database and updating its value
 """
 def inc_round_count_db():
     cur=connection.cursor()
-    QUERY="SELECT MAX(game_id) FROM mydb.game"   #returns last game id
+    QUERY="SELECT MAX(game_id) FROM clientdb.game"   #returns last game id
     cur.execute(QUERY)
     current_game_id = cur.fetchall()
     print("this is the current gameID")
     print(current_game_id)
     current_game_id = current_game_id[0][0]  #extracting value out of a tuple
 
-    sql = "UPDATE mydb.game SET rounds = %s WHERE game_id = %s" #updating the value rounds where the game id is the same
+    sql = "UPDATE clientdb.game SET rounds = %s WHERE game_id = %s" #updating the value rounds where the game id is the same
     val = (label_roundNr.cget('text'), current_game_id)
     cur.execute(sql, val)
     connection.commit()
@@ -723,7 +723,7 @@ This function will get the data(list of products assigned to this client) and st
 def addProd(data):
     cur=connection.cursor()
     for i in data:
-        QUERY="INSERT INTO mydb.product (product_id,product_name,type,production_time,cost,prerequisites,prerequisites_amount,tier_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        QUERY="INSERT INTO clientdb.product (product_id,product_name,type,production_time,cost,prerequisites,prerequisites_amount,tier_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         vals = ( str(i[0]), str(i[1]), str(i[2]), int(i[3]), float(i[4]), str(i[5]), str(i[6]), int(i[7]))
         cur.execute(QUERY, vals)
         connection.commit()
@@ -736,7 +736,7 @@ Parameters: round - round id
 """
 def add_stock(round):
     cur=connection.cursor()
-    QUERY="SELECT product_id,product_name FROM mydb.product"
+    QUERY="SELECT product_id,product_name FROM clientdb.product"
     cur.execute(QUERY)
     product_names_id=cur.fetchall() 
     print(product_names_id)
@@ -763,7 +763,7 @@ def add_stock(round):
 
     #insets the current stock for the round into the database
     for i in stck:
-        QUERY="INSERT INTO mydb.stock (stock_amount,product_id,round_id) VALUES (%s, %s, %s)"
+        QUERY="INSERT INTO clientdb.stock (stock_amount,product_id,round_id) VALUES (%s, %s, %s)"
         pid =''
         for j in product_names_id:
             if j[1] == i[0]:
@@ -816,7 +816,7 @@ def produce():
 
     #first check if the user has sufficeint raw materials
     cur=connection.cursor()
-    QUERY="SELECT product_id,product_name,prerequisites,prerequisites_amount,production_time FROM mydb.product WHERE type = 'fg'"
+    QUERY="SELECT product_id,product_name,prerequisites,prerequisites_amount,production_time FROM clientdb.product WHERE type = 'fg'"
     cur.execute(QUERY)
     product_names_id=cur.fetchall() 
     print(product_names_id)
@@ -898,12 +898,12 @@ def produce():
             label_finished_4_amount.config(text= str( int(label_finished_4_amount.cget('text'))+ int(entry_produce_4_amount.get())))
 
 
-            QUERY="SELECT round_id FROM mydb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
+            QUERY="SELECT round_id FROM clientdb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
             cur.execute(QUERY)
             previous_round =cur.fetchall()
             print(previous_round)
 
-            QUERY="SELECT production_id FROM mydb.production"   #returns all the round_id's
+            QUERY="SELECT production_id FROM clientdb.production"   #returns all the round_id's
             cur=connection.cursor()
             cur.execute(QUERY)
             production=cur.fetchall()
@@ -936,7 +936,7 @@ def produce():
 
         
                 cur=connection.cursor()
-                QUERY="INSERT INTO mydb.production (production_id, amount, product_id, total_production_time, time_stamp, round_id) VALUES (%s, %s, %s, %s, %s, %s)"
+                QUERY="INSERT INTO clientdb.production (production_id, amount, product_id, total_production_time, time_stamp, round_id) VALUES (%s, %s, %s, %s, %s, %s)"
                 print("db insert products : " + str(i))
                 vals = (production_id,i[1],i[3],(int(i[1])*i[2]),datetime.now(),previous_round[0][0])
                 cur.execute(QUERY, vals)
@@ -980,7 +980,7 @@ def add_backlog():
     prod_list = [p1,p2,p3,p4]
 
     cur=connection.cursor()
-    QUERY="SELECT product_id,product_name FROM mydb.product WHERE type = 'fg'" # select the finished goods product's names and id's
+    QUERY="SELECT product_id,product_name FROM clientdb.product WHERE type = 'fg'" # select the finished goods product's names and id's
     cur.execute(QUERY)
     product_names_id=cur.fetchall() 
     print(product_names_id)
@@ -993,7 +993,7 @@ def add_backlog():
     print("full list of backlog")
     print(prod_list)
 
-    QUERY="SELECT backlog_id FROM mydb.backlog ORDER BY backlog_id DESC LIMIT 1"   #returns last backlog id 
+    QUERY="SELECT backlog_id FROM clientdb.backlog ORDER BY backlog_id DESC LIMIT 1"   #returns last backlog id 
     cur.execute(QUERY)
     last_back_log =cur.fetchall()
     print(last_back_log)
@@ -1006,7 +1006,7 @@ def add_backlog():
     else:
         backlog_ids = str(1)
 
-    QUERY="SELECT round_id FROM mydb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
+    QUERY="SELECT round_id FROM clientdb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
     cur.execute(QUERY)
     previous_round =cur.fetchall()
     print(previous_round[0][0])
@@ -1029,7 +1029,7 @@ def add_backlog():
 
 
         cur=connection.cursor()
-        QUERY="INSERT INTO 'mydb'.'backlog' (backlog_id, amount, time_stamp, round_id, product_id) VALUES (%s, %s, %s, %s, %s)"
+        QUERY="INSERT INTO 'clientdb'.'backlog' (backlog_id, amount, time_stamp, round_id, product_id) VALUES (%s, %s, %s, %s, %s)"
         print("db insert open orders: " + str(i))
         #inserts the record into the database
         vals = ("back000001","0",datetime.now(),"round00001","prod00006")
@@ -1068,7 +1068,7 @@ def add_open_deliveries():
     prod_list = [p1,p2,p3,p4]
 
     cur=connection.cursor()
-    QUERY="SELECT product_id,product_name FROM mydb.product WHERE type = 'raw'" #get the id's of said products
+    QUERY="SELECT product_id,product_name FROM clientdb.product WHERE type = 'raw'" #get the id's of said products
     cur.execute(QUERY)
     product_names_id=cur.fetchall() 
     print(product_names_id)
@@ -1084,7 +1084,7 @@ def add_open_deliveries():
 
 
 
-    QUERY="SELECT openorders_id FROM mydb.openorders ORDER BY openorders_id DESC LIMIT 1"   #returns last round
+    QUERY="SELECT openorders_id FROM clientdb.openorders ORDER BY openorders_id DESC LIMIT 1"   #returns last round
     cur.execute(QUERY)
     last_open_del =cur.fetchall()
     print(last_open_del)
@@ -1098,7 +1098,7 @@ def add_open_deliveries():
     else:
         open_order_id = str(1)
 
-    QUERY="SELECT round_id FROM mydb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
+    QUERY="SELECT round_id FROM clientdb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
     cur.execute(QUERY)
     previous_round =cur.fetchall()
     print(previous_round[0][0])
@@ -1121,7 +1121,7 @@ def add_open_deliveries():
 
         cur=connection.cursor()
         # inserts 4 records into the open orders table
-        QUERY="INSERT INTO mydb.openorders (openorders_id, amount, time_stamp, round_id, product_id, from_id) VALUES (%s, %s, %s, %s, %s, %s)"
+        QUERY="INSERT INTO clientdb.openorders (openorders_id, amount, time_stamp, round_id, product_id, from_id) VALUES (%s, %s, %s, %s, %s, %s)"
         print("db insert open orders: " + str(i))
         vals = (open_order_id,i[1],datetime.now(),previous_round,i[2],from_who)
         print(vals)
@@ -1159,7 +1159,7 @@ def order_function():
     print(order_from)
 
     cur=connection.cursor()
-    QUERY="SELECT product_id,product_name FROM mydb.product WHERE type = 'raw'"
+    QUERY="SELECT product_id,product_name FROM clientdb.product WHERE type = 'raw'"
     cur.execute(QUERY)
     product_names_id=cur.fetchall() 
     print(product_names_id)
@@ -1193,7 +1193,7 @@ def order_function():
 
         #build order for sql
 
-        QUERY="SELECT order_id FROM mydb.order"   #returns all the round_id's
+        QUERY="SELECT order_id FROM clientdb.order"   #returns all the round_id's
         cur=connection.cursor()
         cur.execute(QUERY)
         orders=cur.fetchall()
@@ -1210,7 +1210,7 @@ def order_function():
         else:
             order_id = str(1)
 
-        QUERY="SELECT round_id FROM mydb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
+        QUERY="SELECT round_id FROM clientdb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
         cur.execute(QUERY)
         previous_round =cur.fetchall()
         print(previous_round)
@@ -1232,7 +1232,7 @@ def order_function():
 
             #writing data to the order table
             cur=connection.cursor()
-            QUERY="INSERT INTO mydb.order (order_id, amount, time_stamp, product_id, tier_id, round_id) VALUES (%s, %s, %s, %s, %s, %s)"
+            QUERY="INSERT INTO clientdb.order (order_id, amount, time_stamp, product_id, tier_id, round_id) VALUES (%s, %s, %s, %s, %s, %s)"
             print("db insert orders : " + str(i))
             vals = (order_id,i[1],datetime.now(),i[0],order_from,previous_round[0][0])
             cur.execute(QUERY, vals)
@@ -1754,7 +1754,7 @@ class deliver1(threading.Thread):
         print(deliver_to) 
 
         cur=connection.cursor()
-        QUERY="SELECT product_id,product_name FROM mydb.product WHERE type = 'fg'"       #selectiong the products which can be shipped
+        QUERY="SELECT product_id,product_name FROM clientdb.product WHERE type = 'fg'"       #selectiong the products which can be shipped
         cur.execute(QUERY)
         product_names_id=cur.fetchall() 
         print(product_names_id)                                                           # list of those products containing names and id's
@@ -1807,7 +1807,7 @@ class deliver1(threading.Thread):
 
                 #build order for sql
 
-                QUERY="SELECT deliver_id FROM mydb.deliver"   #returns all the round_id's
+                QUERY="SELECT deliver_id FROM clientdb.deliver"   #returns all the round_id's
                 cur=connection.cursor()
                 cur.execute(QUERY)
                 deliveries=cur.fetchall()
@@ -1824,7 +1824,7 @@ class deliver1(threading.Thread):
                 else:
                     deliver_id = str(1)
 
-                QUERY="SELECT round_id FROM mydb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
+                QUERY="SELECT round_id FROM clientdb.rounds ORDER BY round_id DESC LIMIT 1"   #returns last round
                 cur.execute(QUERY)
                 previous_round =cur.fetchall()
                 print(previous_round)
@@ -1846,7 +1846,7 @@ class deliver1(threading.Thread):
 
 
                     cur=connection.cursor()
-                    QUERY="INSERT INTO mydb.deliver (deliver_id, amount, time_stamp, product_id, to_tier_id, round_id) VALUES (%s, %s, %s, %s, %s, %s)"
+                    QUERY="INSERT INTO clientdb.deliver (deliver_id, amount, time_stamp, product_id, to_tier_id, round_id) VALUES (%s, %s, %s, %s, %s, %s)"
                     print("db insert orders : " + str(i))
                     vals = (deliver_id,i[1],datetime.now(),i[0],deliver_to,previous_round[0][0])
                     cur.execute(QUERY, vals)

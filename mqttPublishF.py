@@ -72,6 +72,8 @@ from datetime import datetime
 import threading
 from threading import Timer
 import time
+import cryptography
+tk.use('Agg')
 
 #constant global variables used in the script
 CONST_TOPIC_START_ROUND = "startRound"
