@@ -151,6 +151,10 @@ DEFAULT CHARACTER SET = utf8;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+                                 
+INSERT INTO `` (`type_id`,`transaction_name`,`description`) VALUES ('1','order','Order form a tier lower');
+INSERT INTO `` (`type_id`,`transaction_name`,`description`) VALUES ('2','produce','produce a product from raw materials');
+INSERT INTO `` (`type_id`,`transaction_name`,`description`) VALUES ('3','deliver','product delivered');
 
 INSERT INTO `tier` (`tier_id`,`company_name`) VALUES ('1','AMK ');
 INSERT INTO `tier` (`tier_id`,`company_name`) VALUES ('2','AMD');
