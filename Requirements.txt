@@ -28,3 +28,9 @@ mysql connector → bereits intalliert
 
 RFID:
 sudo pip3 install mfrc522
+
+
+docker:
+sudo apt-get install libffi-dev libssl-dev
+sudo ap-get remove python-configparser
+sudo pip install docker-compose
