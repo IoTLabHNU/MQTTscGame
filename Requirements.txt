@@ -38,3 +38,11 @@ docker:
 sudo apt-get install libffi-dev libssl-dev
 sudo ap-get remove python-configparser
 sudo pip install docker-compose
+
+
+PI - FAQ and errors
+------------------------
+Pi file system window error
+When the you try to open the file manager of the pi and it constantly closes just after it opens up, use this script.
+	sudo apt-get install --reinstall pcmanfm
+
