@@ -1879,7 +1879,7 @@ class deliver1(threading.Thread):
 
                 rfid_data =''
                 for i in deliver_list:
-                    rfid_data = rfid_data + i[1]
+                    rfid_data = rfid_data + str(i[1])
                     rfid_data = rfid_data + "#"
                 print(rfid_data)
                 # write data to the rifd tag
