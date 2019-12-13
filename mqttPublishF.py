@@ -102,7 +102,7 @@ game_id = 0
 global product_List
 
 #=================Gets the product list to update the labels on the interface==========================================================#
-connection = mysql.connector.connect(host='db',  database='admindb', user='root',password='root',auth_plugin='mysql_native_password')
+connection = mysql.connector.connect(host='localhost',  database='admindb', user='pi',password='pi',auth_plugin='mysql_native_password')
 QUERY="SELECT * FROM admindb.products"   #returns all the products
 cur=connection.cursor()
 cur.execute(QUERY)
