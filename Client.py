@@ -10,7 +10,7 @@ This project is a collaboration between HNU university of applied Sciences and U
 The project concerns the flow of products and information in complex supply chains. This information is used to introduce students
 to the nature of supply chain management. Some learning objectives include lean management of stock and product flow on terms of inbound
 and outbound.
-There are two scripts for this game to work. This mqttTestClientF.py script for clients and the mqttPublishF.py script which is for the admin
+There are two scripts for this game to work. This Client.py script for clients and the Admin.py script which is for the admin
 
 What is this script ?
 ---------------------
@@ -20,7 +20,7 @@ This scrip houses the UI and functionality of producing products , ordering prod
 How does it work ?
 ------------------
 The following steps it what is needed to follow in order to reproduce the desired result of a working client:
-    ->run the script using python3 mqttTestClientF.py
+    ->run the script using python3 Client.py
     ->Enter the ID of the client(assigned tier from one to four)
     ->The script will then try to connect to the hive MQTT broker
     ->If the connection was successful a connected text will appear next to the button connect(This is essential)
