@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`product` (
   INDEX `fk_product_tiers1_idx` (`tier_id` ASC) ,
   CONSTRAINT `fk_product_tiers1`
     FOREIGN KEY (`tier_id`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`backlog` (
     REFERENCES `clientdb`.`rounds` (`round_id`),
   CONSTRAINT `fk_backlog_tiers1`
     FOREIGN KEY (`to`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`deliver` (
     REFERENCES `clientdb`.`rounds` (`round_id`),
   CONSTRAINT `fk_deliver_tiers1`
     FOREIGN KEY (`to_tier_id`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`inbound` (
     REFERENCES `clientdb`.`rounds` (`round_id`),
   CONSTRAINT `fk_inbound_tiers1`
     FOREIGN KEY (`tier_id`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`openorders` (
     REFERENCES `clientdb`.`rounds` (`round_id`),
   CONSTRAINT `fk_openorders_tiers1`
     FOREIGN KEY (`from_id`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`order` (
     REFERENCES `clientdb`.`rounds` (`round_id`),
   CONSTRAINT `fk_order_tiers1`
     FOREIGN KEY (`tier_id`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `clientdb`.`outbound` (
     REFERENCES `clientdb`.`rounds` (`round_id`),
   CONSTRAINT `fk_outbound_tiers1`
     FOREIGN KEY (`tier_id`)
-    REFERENCES `clientdb`.`tiers` (`tier_id`))
+    REFERENCES `clientdb`.`tier` (`tier_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
