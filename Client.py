@@ -712,7 +712,7 @@ def process_connect2Server():
     number = str(entry_id_number.get())
     entry_id_number.config(state = "disabled")     #disable
 
-    client.connect("192.168.0.101")   # IP adress of the MQTT server
+    client.connect("broker.hivemq.com")   # IP adress of the MQTT server
     client.loop_start()
 
 """
