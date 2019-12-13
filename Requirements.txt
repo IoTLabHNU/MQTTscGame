@@ -24,9 +24,13 @@ sudo apt-get install mariadb-server -j
 	grant all privileges on *.* to ‚pi‘@‘%‘ with grant option;
 	flush privileges;
 	exit
-mysql connector → bereits intalliert
+	
+mysql connector:
+sudo pip3 install mysql.connector
 
 RFID:
+sudo raspi-config - Interfacing Options - SPI - Enable
+sudo reboot
 sudo pip3 install mfrc522
 
 
