@@ -1322,7 +1322,7 @@ def process_connect2Server():
     entry_set_round_time.insert(0, '120')
 
 
-    client.connect("127.0.0.1")
+    client.connect("broker.hivemq.com")
     client.loop_start()
 
 #Main-Program
