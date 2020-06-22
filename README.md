@@ -67,3 +67,18 @@ Lastly information from the deliveries of products from one tier to the next
 
 ### Library Testing
 for testing all librarys, the file "test_libs.py" will check if all librarys are running.
+
+### Installation of the game
+First: Run the SQL-Script:
+   - Admin: Run it on one Raspberry Pi
+   - Client: Run it on four more Raspberry Pis.
+
+Second: Starting the game:
+   - Admin: run Admin.py
+   - Admin: Start a session
+   - Client: run Client.py
+   - Client: Login with a teamnumber (1-4)
+   - Admin: Start the game
+   --> The game is running.
+   
+
