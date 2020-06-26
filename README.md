@@ -81,4 +81,7 @@ Second: Starting the game:
    - Admin: Start the game
    --> The game is running.
    
-
+### Options for future development
+- Docker: for fast installation
+- Web-Version: HTML based without RFID-Reader for playing it at home.
+- Responsive design (GUI). (We are using 7" Raspberry Pi Displays)
