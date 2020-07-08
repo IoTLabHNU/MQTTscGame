@@ -85,6 +85,7 @@ Second: Starting the game:
 - Docker: for fast installation - find way around gui issues when using docker.
 - Web-Version: HTML based without RFID-Reader for playing it at home.
 - Responsive design (GUI). (We are using 7" Raspberry Pi Displays)
+- Installation routines for all necessary packages for a Raspi PLUS an execution button to start the game (with a double-click)
 
 ### Possible bugs(Will be needing a full test run to confirm)
 - One possible problem is that the pi's can overheat. This will freeze the affected participant's screen and the pi will have to be unplugged and reconnected. This forces the whole game to be stopped and since game state tracking a pickup is not a feature this will force the game to be started back up from scratch. This is one of the bigger issues but gan be fixed in 2 ways. Streamline the coding and enable game state tracking and pickup.
