@@ -82,6 +82,11 @@ Second: Starting the game:
    --> The game is running.
    
 ### Options for future development
-- Docker: for fast installation
+- Docker: for fast installation - find way around gui issues when using docker.
 - Web-Version: HTML based without RFID-Reader for playing it at home.
 - Responsive design (GUI). (We are using 7" Raspberry Pi Displays)
+
+### Possible bugs(Will be needing a full test run to confirm)
+- One possible problem is that the pi's can overheat. This will freeze the affected participant's screen and the pi will have to be unplugged and reconnected. This forces the whole game to be stopped and since game state tracking a pickup is not a feature this will force the game to be started back up from scratch. This is one of the bigger issues but gan be fixed in 2 ways. Streamline the coding and enable game state tracking and pickup.
+- Another game-breaking bug that happens at random points is that when an operation is affecting another as an interrupt the whole game would freeze. Note to fix this one must make sure that different operations can not interrupt each other. This can be done using threads. Careful to not use too many threads and overcomplicate things. Tracking the game state would also ve very helpful if the game comes to a standstill of one of the hosts.
+- Use tabbed panels to declutter the pi screens as this was a GUI but that the user might not be able to see all the information.
